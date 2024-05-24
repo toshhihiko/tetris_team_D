@@ -3,8 +3,8 @@ package app_TETRIS;
 public class GameArea { //15結合済み
     private int fieldHight = 21;
     private int fieldWidth = 12;
-    private int grandHight = 30; // 広めに確保
-    private int grandWidth = 20; // 広めに確保
+    private int grandHight = 30; // �?めに確�?
+    private int grandWidth = 20; // �?めに確�?
     private int[][] field;
     private int[][] bufferField;
     private int score = 0; 
@@ -68,7 +68,7 @@ public class GameArea { //15結合済み
     
 
 
-    // 描画用Field初期化
+    // 描画用Field初期�?
     public void initField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
@@ -77,7 +77,7 @@ public class GameArea { //15結合済み
         }
     }
 
-    // 壁用BufferField初期化
+    // 壁用BufferField初期�?
     public void initBufferField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
@@ -92,7 +92,7 @@ public class GameArea { //15結合済み
         }
     }
 
-    // スレッドに描画
+    // スレ�?ドに描画
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
@@ -103,10 +103,9 @@ public class GameArea { //15結合済み
         System.out.println("消したライン数：" + linecount); 
         System.out.print("名前:" + name +"   ");
         System.out.println("スコア：" + score); 
-
     }
 
-    //fieldの下にnextMinoを出力
+    //fieldの下にnextMinoを�?��?
    public void drawNextMino(Mino nextMino) {
 
     int[][][] m = nextMino.getMino();
@@ -121,25 +120,20 @@ public class GameArea { //15結合済み
     }
 
 
-    // コントローラー用再描画メソッド
+    // コントローラー用再描画メソ�?�?
     public void drawFieldAndMino(Mino mino, Mino nextMino) {
         if (isCollison(mino)) {
             bufferFieldAddMino(mino);
-            // eraseLine();
-            // addScore(); //操作したタイミングでしか機能しない
-            // resetCount();
             initField();
-            mino.initMino();
+            nextMino.initMino();//変更点！！nextMinoに変更して 次のMinoが新しいminoとして認識された.
         } else {
-            // eraseLine();
             initField();
             fieldAddMino(mino);
-            // addScore();
-            // resetCount();
         }
-        drawField();
+
+        //drawField();//ここコメントアウト drawFieldの重複をなくした。
         System.out.println();
-       // resetCount();   //　点数が加算され続ける
+       // resetCount();   //　点数が加算され続け�?
     }
 
     public void fieldAddMino(Mino mino) {
@@ -158,11 +152,11 @@ public class GameArea { //15結合済み
         }
     }
 
-    // 当たり判定 自動落下用
+    // 当たり判�? 自動落下用
     public boolean isCollison(Mino mino) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
-                // 1カラム下の行を確認して1があるか確認
+                // 1カラ�?下�?�行を確認して1があるか確�?
                 if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1
                         && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
                     return true;
@@ -172,7 +166,7 @@ public class GameArea { //15結合済み
         return false;
     }
 
-    // 当たり判定 コントローラー用
+    // 当たり判�? コントローラー用
     public boolean isCollison(Mino mino, int _x, int _y, int _angle) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
@@ -184,7 +178,7 @@ public class GameArea { //15結合済み
         return false;
     }
 
-    // ライン削除処理
+    // ライン削除処�?
     public void eraseLine() {
         boolean isFill = true;
         resetCount();
@@ -205,12 +199,11 @@ public class GameArea { //15結合済み
 
             } // if end
             isFill = true;
-            // addScore(); //1行ごとに処理された
-            // resetCount(); // 0のまま更新されない
+            // addScore(); //1行ごとに処�?され�?
+            // resetCount(); // 0のまま更新されな�?
         } // for end
         addScore();  
         // resetCount();
-
     }
 
     public void addScore(){ //スコア計算を行う
@@ -220,7 +213,7 @@ public class GameArea { //15結合済み
         // if(score == intMax){
         //     System.out.println("max_score");
         // }else{
-            switch (count) {//ライン数によって加算されるスコアの場合分け
+            switch (count) {//ライン数によって�?算されるスコアの場合�??�?
                 case 1:
                     if(score - 40 > intMax - 40){
                         score = intMax;
@@ -258,7 +251,7 @@ public class GameArea { //15結合済み
         
     // }
 
-    // コントローラー呼び出しメソッド← ↓ → 回転 ↑
+    // コントローラー呼び出しメソ�?ド�?? �? �? 回転 �?
     public void moveDown(Mino mino) {
         mino.addMinoY();
     }
