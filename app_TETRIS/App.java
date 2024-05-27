@@ -8,6 +8,8 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import java.util.Scanner;
 
+
+
 public class App extends JFrame {
     // オブジェクトをAppクラスで利用できるようにフィールド（メンバ変数）を準備
     GameArea ga;
@@ -24,6 +26,16 @@ public class App extends JFrame {
         new GameThread(mino, ga).start();
         // コントローラーの呼び出し
         initControls();
+        //System.out.println("12233");
+    }
+        // Change: Modified constructor to accept a GameArea instance
+    public App(GameArea ga) {
+        this.ga = ga;
+        this.mino = new Mino();
+        this.nextMino = new Mino();
+        
+        new GameThread(mino, ga).start();
+        initControls();
     }
 
     // mainメソッド 1番最初に動く特別なメソッド
@@ -34,25 +46,38 @@ public class App extends JFrame {
         Scanner sc = new Scanner(System.in);
         String name = sc.next();
         
-        
+
+        GameArea player;
         // 名前入力においてのルール
         int l = name.length();
         if(0 < l && l <= 16) {
             System.out.println("ようこそ" + name + "さん！"); 
-            GameArea player = new GameArea();
+            //GameArea player = new GameArea();
+            player = new GameArea();
             player.setName(name);
         } else {
             System.out.println("ゲスト");
-            GameArea player = new GameArea();
+            //GameArea player = new GameArea();
+            player = new GameArea();
             player.setName("ゲスト");
         }
         
         System.out.println("EnterKeyを押してスタート！！");
         while ((System.in.read()) != '\n') ;
     
-        java.awt.EventQueue.invokeLater(new Runnable() {
+
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new App().setVisible(true);
+            }
+        });
+        sc.close();*/
+
+                // Change: Pass the created GameArea instance to the App constructor
+        final GameArea finalPlayer = player;
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new App(finalPlayer).setVisible(true);
             }
         });
         sc.close();
@@ -120,7 +145,6 @@ public class App extends JFrame {
                         (mino.getMinoAngle() + 1) % mino.getMinoAngleSize())) {
                     ga.rotation(mino);
                     ga.drawFieldAndMino(mino, mino);
-
                 }
             }
         });

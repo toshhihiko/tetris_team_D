@@ -28,9 +28,9 @@ public class GameThread extends Thread {
         this.nextMino = new Mino();
     }
 
-    //public void nextMino(Mino nextMino){ 
-      //  this.mino = nextMino;
-    //}
+    public void nextMino(Mino nextMino){ 
+      this.mino = nextMino;
+    }
 
     public void run() {
 
@@ -49,22 +49,23 @@ public class GameThread extends Thread {
                 ga.eraseLine();
                 // ga.addScore();
                 // ga.resetCount();
-                ga.initField();
+                //ga.initField();//コメントアウト追加
+                //mino.initMino this.mino=nextMinoの位置を交換
+                this.mino = nextMino; //このnextMinoはどこのmino??
                 mino.initMino(); 
-                this.mino = nextMino; 
                 this.nextMino = new Mino(); 
-                //nextMino.initMino(); 
+                //nextMino.initMino();//コメントアウト追加 
             } else {
-                ga.eraseLine();
+                ga.eraseLine();//コメントアウト追加  
                 // ga.addScore();
                 // ga.resetCount();
-                ga.initField();
-                ga.fieldAddMino(mino);
+                //ga.initField();//コメントアウト追加 
+                ga.fieldAddMino(mino);//コメントアウト消した
             }
-            ga.drawField();
+            ga.drawFieldAndMino(mino,nextMino);//コメントアウト消した
+            ga.drawField();//コメントアウト消した
             System.out.println("NextMino"); 
             ga.drawNextMino(nextMino); 
-            // ga.drawFieldAndMino(mino);
             
             try {
                 Thread.sleep(1000);
