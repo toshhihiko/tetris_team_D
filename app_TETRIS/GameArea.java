@@ -8,11 +8,11 @@ public class GameArea {
     private int[][] field;
     private int[][] bufferField;
     private Mino mino;
-    private Mino NextMino;
+    private Mino nextMino;
 
     public GameArea() {
         this.mino = new Mino();
-        this.NextMino = new Mino();
+        this.nextMino = new Mino();
         this.field = new int[grandHight][grandWidth];
         this.bufferField = new int[grandHight][grandWidth];
         initBufferField();
@@ -52,8 +52,8 @@ public class GameArea {
         }
     }
 
-   public void drawNextMino(Mino nextMino) {
-    int[][][] m = nextMino.getMino();
+   public void drawNextMino() {
+    int[][][] m = this.nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
                 System.out.printf("%s", (m[0][y][x] == 1 ? "回" : "・"));
@@ -63,40 +63,40 @@ public class GameArea {
     }
 
     //本丸
-    public void drawFieldAndMino(Mino mino, Mino nextMino) {
-        if (isCollison(mino)) {
-            bufferFieldAddMino(mino);
+    public void drawFieldAndMino() {
+        if (isCollison()) {
+            bufferFieldAddMino();
             initField();
         } else {
             initField();
-            fieldAddMino(mino);
+            fieldAddMino();
         }
         System.out.println("Next Mino");
-        drawNextMino(nextMino);
+        drawNextMino();
         System.out.println();
         drawField();
     }
 
-    public void fieldAddMino(Mino mino) {
-        for (int y = 0; y < mino.getMinoSize(); y++) {
-            for (int x = 0; x < mino.getMinoSize(); x++) {
-                this.field[mino.getMinoY() + y][mino.getMinoX() + x] |= mino.getMino()[mino.getMinoAngle()][y][x];
+    public void fieldAddMino() {
+        for (int y = 0; y < this.mino.getMinoSize(); y++) {
+            for (int x = 0; x < this.mino.getMinoSize(); x++) {
+                this.field[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |=  this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
 
-    public void bufferFieldAddMino(Mino mino) {
-        for (int y = 0; y < mino.getMinoSize(); y++) {
-            for (int x = 0; x < mino.getMinoSize(); x++) {
-                this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] |= mino.getMino()[mino.getMinoAngle()][y][x];
+    public void bufferFieldAddMino() {
+        for (int y = 0; y < this.mino.getMinoSize(); y++) {
+            for (int x = 0; x < this.mino.getMinoSize(); x++) {
+                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
 
-    public boolean isCollison(Mino mino) {
-        for (int r = 0; r < mino.getMinoSize(); r++) {
-            for (int c = 0; c < mino.getMinoSize(); c++) {
-                if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1 && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
+    public boolean isCollison() {
+        for (int r = 0; r < this.mino.getMinoSize(); r++) {
+            for (int c = 0; c < this.mino.getMinoSize(); c++) {
+                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1 && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {
                     return true;
                 }
             }
@@ -104,9 +104,9 @@ public class GameArea {
         return false;
     }
 
-    public boolean isCollison(Mino mino, int _x, int _y, int _angle) {
-        for (int r = 0; r < mino.getMinoSize(); r++) {
-            for (int c = 0; c < mino.getMinoSize(); c++) {
+    public boolean isCollison(int _x, int _y, int _angle) {
+        for (int r = 0; r < this.mino.getMinoSize(); r++) {
+            for (int c = 0; c < this.mino.getMinoSize(); c++) {
                 if (this.bufferField[_y + r][_x + c] == 1 && mino.getMino()[_angle][r][c] == 1) {
                     return true;
                 }
@@ -115,20 +115,16 @@ public class GameArea {
         return false;
     }
 
-    public void moveDown(Mino mino) {
-        mino.addMinoY();
+    public void moveDown() {
+        this.mino.addMinoY();
     }
-
-    public void moveRight(Mino mino) {
-        mino.addMinoX();
+    public void moveRight() {
+        this.mino.addMinoX();
     }
-
-    public void moveLeft(Mino mino) {
-        mino.decMinoX();
+    public void moveLeft() {
+        this.mino.decMinoX();
     }
-
-    public void rotation(Mino mino) {
-        mino.setMinoAngle((mino.getMinoAngle() + 1) % mino.getMinoAngleSize());
+    public void rotation() {
+        this.mino.setMinoAngle((this.mino.getMinoAngle() + 1) % this.mino.getMinoAngleSize());
     }
-
 }
