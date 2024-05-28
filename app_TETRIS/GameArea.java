@@ -71,6 +71,7 @@ public class GameArea {
             }
             System.out.println();
         }
+        System.out.println("名前：" + name + "　　");
     }
 
     public void drawNextMino() {
@@ -112,10 +113,11 @@ public class GameArea {
         return false;
     }
 
-    public boolean isCollison(int _x, int _y, int _angle) {
+    public boolean isCollison(int x, int y, int angle) {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
-                if (this.bufferField[_y + r][_x + c] == 1 && mino.getMino()[_angle][r][c] == 1) {
+                int nextAngle = (mino.getMinoAngle() + angle) % mino.getMinoAngleSize();
+                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] == 1 && mino.getMino()[nextAngle][r][c] == 1) {
                     return true;
                 }
             }

@@ -54,36 +54,40 @@ public class App extends JFrame {
         im.put(KeyStroke.getKeyStroke("RIGHT"), "right");
         am.put("right", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                //if (!ga.isCollison(mino, mino.getMinoX() + 1, mino.getMinoY(), mino.getMinoAngle())) {
+                if (!ga.isCollison(1, 0, 0)) {
                     ga.moveRight();
                     ga.drawFieldAndMino();
+                }
             }
         });
 
         im.put(KeyStroke.getKeyStroke("LEFT"), "left");
         am.put("left", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                //if (!ga.isCollison(mino, mino.getMinoX() - 1, mino.getMinoY(), mino.getMinoAngle())) {
+                if (!ga.isCollison(-1, 0, 0)) {
                     ga.moveLeft();
                     ga.drawFieldAndMino();
+                }
             }
         });
 
         im.put(KeyStroke.getKeyStroke("DOWN"), "down");
         am.put("down", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                //if (!ga.isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())) {
+                if (!ga.isCollison(0, 1, 0)) {
                     ga.moveDown();
                     ga.drawFieldAndMino();
+                }
             }
         });
 
         im.put(KeyStroke.getKeyStroke("UP"), "up");
         am.put("up", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                //if (!ga.isCollison(mino, mino.getMinoX() + 1, mino.getMinoY(), (mino.getMinoAngle() + 1) % mino.getMinoAngleSize())) {
+                if (!ga.isCollison(1, 0, 1)) {
                     ga.rotation();
                     ga.drawFieldAndMino();
+                }
             }
         });
     }
