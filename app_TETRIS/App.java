@@ -14,6 +14,7 @@ public class App extends JFrame {
     GameArea ga;
     public App(GameArea ga) {
         this.ga = ga;
+        new GameThread(ga).start();
         initControls();
     }
 
