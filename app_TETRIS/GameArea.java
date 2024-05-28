@@ -10,6 +10,8 @@ public class GameArea {
     private Mino mino;
     private Mino nextMino;
     private String name;
+    private int score = 0;
+    private int linecount = 0;
 
     public GameArea() {
         this.mino = new Mino();
@@ -77,7 +79,9 @@ public class GameArea {
             }
             System.out.println();
         }
-        System.out.println("名前：" + name + "　　");
+        System.out.println("消したライン数：" + linecount); 
+        System.out.print("名前:" + name +"   ");
+        System.out.println("スコア：" + score); 
     }
 
     public void drawNextMino() {
@@ -137,6 +141,7 @@ public class GameArea {
 
     // ライン削除処理
     public void eraseLine() {
+        int lines = 0;
         for (int y = fieldHight - 2; y > 0; y--) {
             boolean isFill = true;
             for (int x = 1; x < fieldWidth - 1; x++) {
@@ -150,8 +155,31 @@ public class GameArea {
                         bufferField[_y + 1][x] = bufferField[_y][x];
                     }
                 }
+                lines++;
                 y++;
             }
+        }
+        this.linecount += lines;
+        addScore(lines);
+    }
+
+    public void addScore(int lines) {
+        switch (lines) {
+            case 1:
+                score += 40;
+                break;
+            case 2:
+                score += 100;
+                break;
+            case 3:
+                score += 300;
+                break;
+            case 4:
+                score += 1200;
+                break;
+            default:
+                score += 0;
+                break;
         }
     }
 
