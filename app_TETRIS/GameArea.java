@@ -19,10 +19,12 @@ public class GameArea {
         initBufferField();
         initField();
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -33,6 +35,7 @@ public class GameArea {
             initField();
             this.mino = this.nextMino;
             this.nextMino = new Mino();
+            eraseLine();
         } else {
             initField();
             fieldAddMino();
@@ -87,11 +90,12 @@ public class GameArea {
         }
     }
 
-    //ミノをフィールドに書き込む系
+    // ミノをフィールドに書き込む系
     public void fieldAddMino() {
         for (int y = 0; y < this.mino.getMinoSize(); y++) {
             for (int x = 0; x < this.mino.getMinoSize(); x++) {
-                this.field[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
+                this.field[this.mino.getMinoY() + y][this.mino.getMinoX()
+                        + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
@@ -99,16 +103,18 @@ public class GameArea {
     public void bufferFieldAddMino() {
         for (int y = 0; y < this.mino.getMinoSize(); y++) {
             for (int x = 0; x < this.mino.getMinoSize(); x++) {
-                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX()+ x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
+                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX()
+                        + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
 
-    //あたり判定系
+    // あたり判定系
     public boolean isStack() {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
-                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1 && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {
+                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1
+                        && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {
                     return true;
                 }
             }
@@ -120,7 +126,8 @@ public class GameArea {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
                 int nextAngle = (mino.getMinoAngle() + angle) % mino.getMinoAngleSize();
-                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] == 1 && mino.getMino()[nextAngle][r][c] == 1) {
+                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] == 1
+                        && mino.getMino()[nextAngle][r][c] == 1) {
                     return true;
                 }
             }
@@ -128,7 +135,27 @@ public class GameArea {
         return false;
     }
 
-    //操作系
+    // ライン削除処理
+    public void eraseLine() {
+        for (int y = fieldHight - 2; y > 0; y--) {
+            boolean isFill = true;
+            for (int x = 1; x < fieldWidth - 1; x++) {
+                if (bufferField[y][x] == 0) {
+                    isFill = false;
+                }
+            }
+            if (isFill) {
+                for (int _y = y - 1; _y > 0; _y--) {
+                    for (int x = 0; x < fieldWidth; x++) {
+                        bufferField[_y + 1][x] = bufferField[_y][x];
+                    }
+                }
+                y++;
+            }
+        }
+    }
+
+    // 操作系
     public void moveDown() {
         this.mino.addMinoY();
     }

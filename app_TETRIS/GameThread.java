@@ -14,8 +14,6 @@ public class GameThread extends Thread {
 
         while (true) {
             ga.moveDown();
-            System.out.println("NextMino"); 
-            ga.drawNextMino(); 
             ga.drawFieldAndMino();
             
             try {
