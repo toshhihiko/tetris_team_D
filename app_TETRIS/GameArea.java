@@ -9,6 +9,7 @@ public class GameArea {
     private int[][] bufferField;
     private Mino mino;
     private Mino nextMino;
+    private String name;
 
     public GameArea() {
         this.mino = new Mino();
@@ -18,8 +19,28 @@ public class GameArea {
         initBufferField();
         initField();
     }
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+    // 本丸
+    public void drawFieldAndMino() {
+        if (isCollison()) {
+            bufferFieldAddMino();
+            initField();
+        } else {
+            initField();
+            fieldAddMino();
+        }
+        System.out.println("Next Mino");
+        drawNextMino();
+        System.out.println();
+        drawField();
+    }
 
-    //盤面をクリアする
+    // 盤面をクリアする
     public void initField() {
         for (int y = 0; y < this.fieldHight; y++) {
             for (int x = 0; x < this.fieldWidth; x++) {
@@ -52,8 +73,8 @@ public class GameArea {
         }
     }
 
-   public void drawNextMino() {
-    int[][][] m = this.nextMino.getMino();
+    public void drawNextMino() {
+        int[][][] m = this.nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
                 System.out.printf("%s", (m[0][y][x] == 1 ? "回" : "・"));
@@ -62,25 +83,11 @@ public class GameArea {
         }
     }
 
-    //本丸
-    public void drawFieldAndMino() {
-        if (isCollison()) {
-            bufferFieldAddMino();
-            initField();
-        } else {
-            initField();
-            fieldAddMino();
-        }
-        System.out.println("Next Mino");
-        drawNextMino();
-        System.out.println();
-        drawField();
-    }
-
+    //ミノをフィールドに書き込む系
     public void fieldAddMino() {
         for (int y = 0; y < this.mino.getMinoSize(); y++) {
             for (int x = 0; x < this.mino.getMinoSize(); x++) {
-                this.field[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |=  this.mino.getMino()[this.mino.getMinoAngle()][y][x];
+                this.field[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
@@ -88,11 +95,12 @@ public class GameArea {
     public void bufferFieldAddMino() {
         for (int y = 0; y < this.mino.getMinoSize(); y++) {
             for (int x = 0; x < this.mino.getMinoSize(); x++) {
-                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
+                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX()+ x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
 
+    //あたり判定系
     public boolean isCollison() {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
@@ -115,15 +123,19 @@ public class GameArea {
         return false;
     }
 
+    //操作系
     public void moveDown() {
         this.mino.addMinoY();
     }
+
     public void moveRight() {
         this.mino.addMinoX();
     }
+
     public void moveLeft() {
         this.mino.decMinoX();
     }
+
     public void rotation() {
         this.mino.setMinoAngle((this.mino.getMinoAngle() + 1) % this.mino.getMinoAngleSize());
     }
