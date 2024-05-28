@@ -1,139 +1,80 @@
 package app_TETRIS;
 
-public class GameArea { //15結合済み
+public class GameArea {
     private int fieldHight = 21;
     private int fieldWidth = 12;
-    private int grandHight = 30; // �?めに確�?
-    private int grandWidth = 20; // �?めに確�?
+    private int grandHight = 30;
+    private int grandWidth = 20;
     private int[][] field;
     private int[][] bufferField;
-    private int score = 0; 
-    private int linecount = 0; 
-    // private Mino mino;
-    private String name;
+    private Mino mino;
+    private Mino NextMino;
 
     public GameArea() {
-        // this.mino = mino;
+        this.mino = new Mino();
+        this.NextMino = new Mino();
         this.field = new int[grandHight][grandWidth];
         this.bufferField = new int[grandHight][grandWidth];
         initBufferField();
         initField();
     }
 
-    public int getScore(){ 
-        return this.score;
-    }
-
-    public int getcount(){ 
-        return this.linecount;
-    }
-
-    public int resetCount(){ 
-        this.linecount = 0;
-        return this.linecount;
-    }
-
-    public int getFieldHight() {
-        return this.fieldHight;
-    }
-
-    public int getFieldWidth() {
-        return this.fieldWidth;
-    }
-
-    public int getGrandHight() {
-        return this.grandHight;
-    }
-
-    public int getGrandWidth() {
-        return this.grandWidth;
-    }
-
-    public int[][] getBufferField() {
-        return this.bufferField;
-    }
-
-    public int[][] getField() {
-        return this.field;
-    }
-    public GameArea(String name){
-        this.name = name;
-    }
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
-    
-
-
-    // 描画用Field初期�?
+    //盤面をクリアする
     public void initField() {
-        for (int y = 0; y < getFieldHight(); y++) {
-            for (int x = 0; x < getFieldWidth(); x++) {
+        for (int y = 0; y < this.fieldHight; y++) {
+            for (int x = 0; x < this.fieldWidth; x++) {
                 field[y][x] = bufferField[y][x];
             }
         }
     }
 
-    // 壁用BufferField初期�?
     public void initBufferField() {
-        for (int y = 0; y < getFieldHight(); y++) {
-            for (int x = 0; x < getFieldWidth(); x++) {
+        for (int y = 0; y < this.fieldHight; y++) {
+            for (int x = 0; x < this.fieldWidth; x++) {
                 bufferField[y][x] = 0;
             }
         }
-        for (int y = 0; y < getFieldHight(); y++) {
-            bufferField[y][0] = bufferField[y][getFieldWidth() - 1] = 1;
+        for (int y = 0; y < this.fieldHight; y++) {
+            bufferField[y][0] = bufferField[y][this.fieldWidth - 1] = 1;
         }
-        for (int x = 0; x < getFieldWidth(); x++) {
-            bufferField[getFieldHight() - 1][x] = 1;
+        for (int x = 0; x < fieldWidth; x++) {
+            bufferField[fieldHight - 1][x] = 1;
         }
     }
 
-    // スレ�?ドに描画
+    // 描画系
     public void drawField() {
-        for (int y = 0; y < getFieldHight(); y++) {
-            for (int x = 0; x < getFieldWidth(); x++) {
+        for (int y = 0; y < fieldHight; y++) {
+            for (int x = 0; x < fieldWidth; x++) {
                 System.out.printf("%s", (field[y][x] == 1 ? "回" : "・"));
             }
             System.out.println();
         }
-        System.out.println("消したライン数：" + linecount); 
-        System.out.print("名前:" + name +"   ");
-        System.out.println("スコア：" + score); 
     }
 
-    //fieldの下にnextMinoを�?��?
    public void drawNextMino(Mino nextMino) {
-
     int[][][] m = nextMino.getMino();
-
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
                 System.out.printf("%s", (m[0][y][x] == 1 ? "回" : "・"));
             }
             System.out.println();
         }
-        
     }
 
-
-    // コントローラー用再描画メソ�?�?
+    //本丸
     public void drawFieldAndMino(Mino mino, Mino nextMino) {
         if (isCollison(mino)) {
             bufferFieldAddMino(mino);
             initField();
-            nextMino.initMino();//変更点！！nextMinoに変更して 次のMinoが新しいminoとして認識された.
         } else {
             initField();
             fieldAddMino(mino);
         }
-
-        //drawField();//ここコメントアウト drawFieldの重複をなくした。
+        System.out.println("Next Mino");
+        drawNextMino(nextMino);
         System.out.println();
-       // resetCount();   //　点数が加算され続け�?
+        drawField();
     }
 
     public void fieldAddMino(Mino mino) {
@@ -152,13 +93,10 @@ public class GameArea { //15結合済み
         }
     }
 
-    // 当たり判�? 自動落下用
     public boolean isCollison(Mino mino) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
-                // 1カラ�?下�?�行を確認して1があるか確�?
-                if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1
-                        && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
+                if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1 && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
                     return true;
                 }
             }
@@ -166,11 +104,10 @@ public class GameArea { //15結合済み
         return false;
     }
 
-    // 当たり判�? コントローラー用
     public boolean isCollison(Mino mino, int _x, int _y, int _angle) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
-                if (getBufferField()[_y + r][_x + c] == 1 && mino.getMino()[_angle][r][c] == 1) {
+                if (this.bufferField[_y + r][_x + c] == 1 && mino.getMino()[_angle][r][c] == 1) {
                     return true;
                 }
             }
@@ -178,80 +115,6 @@ public class GameArea { //15結合済み
         return false;
     }
 
-    // ライン削除処�?
-    public void eraseLine() {
-        boolean isFill = true;
-        resetCount();
-
-        for (int y = getFieldHight() - 2; y > 0; y--) {
-            for (int x = 1; x < getFieldWidth() - 1; x++) {
-                if (bufferField[y][x] == 0) {
-                    isFill = false;
-                }
-            }
-            if (isFill) {
-                for (int _y = y - 1; _y > 0; _y--) {
-                    for (int x = 0; x < getFieldWidth(); x++) {
-                        bufferField[_y + 1][x] = bufferField[_y][x];
-                    } // for end
-                }
-                this.linecount++; 
-
-            } // if end
-            isFill = true;
-            // addScore(); //1行ごとに処�?され�?
-            // resetCount(); // 0のまま更新されな�?
-        } // for end
-        addScore();  
-        // resetCount();
-    }
-
-    public void addScore(){ //スコア計算を行う
-        
-        int count = getcount(); //消えたライン数を数える
-        int intMax = 21_4748_3647;
-        // if(score == intMax){
-        //     System.out.println("max_score");
-        // }else{
-            switch (count) {//ライン数によって�?算されるスコアの場合�??�?
-                case 1:
-                    if(score - 40 > intMax - 40){
-                        score = intMax;
-                    }else{
-                        score += 40;
-                    }
-                    break;
-                case 2:
-                    if(score - 100 > intMax - 100){
-                        score = intMax;
-                    }else{
-                        score += 100;
-                    }
-                    break;
-                case 3:
-                    if(score - 300 > intMax - 300){
-                        score = intMax;
-                    }else{
-                        score += 300;
-                    }
-                    break;
-                case 4:
-                    if(score - 1200 > intMax - 1200){
-                        score = intMax;
-                    }else{
-                        score += 1200;
-                    }
-                    break;
-                default:
-                    score += 0;
-                    break;
-            }
-    
-        }
-        
-    // }
-
-    // コントローラー呼び出しメソ�?ド�?? �? �? 回転 �?
     public void moveDown(Mino mino) {
         mino.addMinoY();
     }
