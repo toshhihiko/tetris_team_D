@@ -11,19 +11,14 @@ public class GameThread extends Thread {
     }
 
     public void run() {
-
         while (true) {
             ga.moveDown();
             ga.drawFieldAndMino();
-            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-
     }
-
 }

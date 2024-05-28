@@ -107,8 +107,7 @@ public class GameArea {
     public void bufferFieldAddMino() {
         for (int y = 0; y < this.mino.getMinoSize(); y++) {
             for (int x = 0; x < this.mino.getMinoSize(); x++) {
-                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX()
-                        + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
+                this.bufferField[this.mino.getMinoY() + y][this.mino.getMinoX() + x] |= this.mino.getMino()[this.mino.getMinoAngle()][y][x];
             }
         }
     }
@@ -117,8 +116,7 @@ public class GameArea {
     public boolean isStack() {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
-                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1
-                        && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {
+                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1 && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {
                     return true;
                 }
             }
@@ -130,8 +128,7 @@ public class GameArea {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
                 int nextAngle = (mino.getMinoAngle() + angle) % mino.getMinoAngleSize();
-                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] == 1
-                        && mino.getMino()[nextAngle][r][c] == 1) {
+                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] == 1 && mino.getMino()[nextAngle][r][c] == 1) {
                     return true;
                 }
             }
@@ -164,23 +161,11 @@ public class GameArea {
     }
 
     public void addScore(int lines) {
-        switch (lines) {
-            case 1:
-                score += 40;
-                break;
-            case 2:
-                score += 100;
-                break;
-            case 3:
-                score += 300;
-                break;
-            case 4:
-                score += 1200;
-                break;
-            default:
-                score += 0;
-                break;
-        }
+        if (lines == 1) score += 40;
+        else if (lines == 2) score += 100;
+        else if (lines == 3) score += 300;
+        else if (lines == 4) score += 1200;
+        else score += 0;
     }
 
     // 操作系
