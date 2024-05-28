@@ -25,11 +25,14 @@ public class GameArea {
     public void setName(String name){
         this.name = name;
     }
+
     // 本丸
     public void drawFieldAndMino() {
-        if (isCollison()) {
+        if (isStack()) {
             bufferFieldAddMino();
             initField();
+            this.mino = this.nextMino;
+            this.nextMino = new Mino();
         } else {
             initField();
             fieldAddMino();
@@ -102,7 +105,7 @@ public class GameArea {
     }
 
     //あたり判定系
-    public boolean isCollison() {
+    public boolean isStack() {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
                 if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1 && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {

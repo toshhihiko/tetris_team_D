@@ -19,7 +19,7 @@ public class App extends JFrame {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Tetris");
-        System.out.print("名前を入力してください:");
+        System.out.print("名前を入力してください：");
 
         Scanner sc = new Scanner(System.in);
         String name = sc.next();
