@@ -83,7 +83,7 @@ public class App extends JFrame {
         im.put(KeyStroke.getKeyStroke("UP"), "up");
         am.put("up", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                if (!ga.isCollison(1, 0, 1)) {
+                if (!ga.isCollison(0, 0, 1)) {
                     ga.rotation();
                     ga.drawFieldAndMino();
                 }

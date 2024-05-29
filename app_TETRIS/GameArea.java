@@ -2,7 +2,7 @@ package app_TETRIS;
 
 public class GameArea {
     private int fieldHight = 21;
-    private int fieldWidth = 12;
+    private int fieldWidth = 17;
     private int grandHight = 30;
     private int grandWidth = 20;
     private int[][] field;
@@ -12,6 +12,7 @@ public class GameArea {
     private String name;
     private int score = 0;
     private int linecount = 0;
+    private int edge = 3;
 
     public GameArea() {
         this.mino = new Mino();
@@ -64,9 +65,9 @@ public class GameArea {
             }
         }
         for (int y = 0; y < this.fieldHight; y++) {
-            this.bufferField[y][0] = this.bufferField[y][this.fieldWidth - 1] = 1;
+            this.bufferField[y][edge] = this.bufferField[y][this.fieldWidth - 1] = 1;
         }
-        for (int x = 0; x < fieldWidth; x++) {
+        for (int x = edge; x < fieldWidth; x++) {
             this.bufferField[this.fieldHight - 1][x] = 1;
         }
     }
@@ -74,7 +75,7 @@ public class GameArea {
     // 描画系
     public void drawField() {
         for (int y = 0; y < fieldHight; y++) {
-            for (int x = 0; x < fieldWidth; x++) {
+            for (int x = edge; x < fieldWidth; x++) {
                 System.out.printf("%s", (field[y][x] == 1 ? "回" : "・"));
             }
             System.out.println();
@@ -141,12 +142,12 @@ public class GameArea {
         int lines = 0;
         for (int y = fieldHight - 2; y > 0; y--) {
             boolean isFill = true;
-            for (int x = 1; x < fieldWidth - 1; x++) {
+            for (int x = edge + 1; x < fieldWidth - 1; x++) {
                 if (bufferField[y][x] == 0) isFill = false;
             }
             if (isFill) {
                 for (int _y = y - 1; _y > 0; _y--) {
-                    for (int x = 0; x < fieldWidth; x++) {
+                    for (int x = edge; x < fieldWidth; x++) {
                         bufferField[_y + 1][x] = bufferField[_y][x];
                     }
                 }

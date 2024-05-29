@@ -60,8 +60,8 @@ public class Mino {
         this.x = 5;
         setMinoType();
         setMinoAngle();
-        // this.minoType = 1; // debug用
-        // this.minoAngle = 1;// debug用
+         this.minoType = 1; // debug用
+         this.minoAngle = 1;// debug用
         randSet();
     }
 
