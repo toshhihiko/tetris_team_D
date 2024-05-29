@@ -34,30 +34,34 @@ public class GameArea {
 
     // 本丸
     public void drawFieldAndMino() {
-        boolean isGameOver = false;
-        if (isStack()) {
-            bufferFieldAddMino();
-            initField();
-            eraseLine();
-            this.mino = this.nextMino;
-            this.nextMino = new Mino();
-            for (int i = edge_left + 1; i < fieldWidth - 1; i++) {
-                if (this.field[3][i] == 1) {
-                    isGameOver = true;
-                }
-            }
-        } else {
-            initField();
-            fieldAddMino();
-        }
+        initField();
+        fieldAddMino();
+
         System.out.println("Next Mino");
         drawNextMino();
         System.out.println();
         drawField();
-        if (isGameOver) {
-            System.out.println("GameOver");
-            System.out.println(this.name + "  あなたのスコア:" + this.score);
-            System.exit(0);
+    }
+
+    public void drawBufferFieldAndMino() {
+        bufferFieldAddMino();
+        initField();
+        
+        eraseLine();
+        this.mino = this.nextMino;
+        this.nextMino = new Mino();
+
+        System.out.println("Next Mino");
+        drawNextMino();
+        System.out.println();
+        drawField();
+
+        for (int i = edge_left + 1; i < fieldWidth - 1; i++) {
+            if (this.field[3][i] == 1) {
+                System.out.println("GameOver");
+                System.out.println(this.name + "  あなたのスコア:" + this.score);
+                System.exit(0);
+            }
         }
     }
 
