@@ -35,9 +35,9 @@ public class GameArea {
         if (isStack()) {
             bufferFieldAddMino();
             initField();
+            eraseLine();
             this.mino = this.nextMino;
             this.nextMino = new Mino();
-            eraseLine();
         } else {
             initField();
             fieldAddMino();
@@ -52,7 +52,7 @@ public class GameArea {
     public void initField() {
         for (int y = 0; y < this.fieldHight; y++) {
             for (int x = 0; x < this.fieldWidth; x++) {
-                field[y][x] = bufferField[y][x];
+                this.field[y][x] = this.bufferField[y][x];
             }
         }
     }
@@ -60,14 +60,14 @@ public class GameArea {
     public void initBufferField() {
         for (int y = 0; y < this.fieldHight; y++) {
             for (int x = 0; x < this.fieldWidth; x++) {
-                bufferField[y][x] = 0;
+                this.bufferField[y][x] = 0;
             }
         }
         for (int y = 0; y < this.fieldHight; y++) {
-            bufferField[y][0] = bufferField[y][this.fieldWidth - 1] = 1;
+            this.bufferField[y][0] = this.bufferField[y][this.fieldWidth - 1] = 1;
         }
         for (int x = 0; x < fieldWidth; x++) {
-            bufferField[fieldHight - 1][x] = 1;
+            this.bufferField[this.fieldHight - 1][x] = 1;
         }
     }
 
@@ -142,9 +142,7 @@ public class GameArea {
         for (int y = fieldHight - 2; y > 0; y--) {
             boolean isFill = true;
             for (int x = 1; x < fieldWidth - 1; x++) {
-                if (bufferField[y][x] == 0) {
-                    isFill = false;
-                }
+                if (bufferField[y][x] == 0) isFill = false;
             }
             if (isFill) {
                 for (int _y = y - 1; _y > 0; _y--) {

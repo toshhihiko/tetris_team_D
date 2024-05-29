@@ -8,10 +8,9 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import java.util.Scanner;
 
-
-
 public class App extends JFrame {
     GameArea ga;
+
     public App(GameArea ga) {
         this.ga = ga;
         new GameThread(ga).start();
@@ -24,22 +23,21 @@ public class App extends JFrame {
 
         Scanner sc = new Scanner(System.in);
         String name = sc.next();
-        
-        GameArea ga;
+
+        GameArea ga = new GameArea();
 
         int l = name.length();
-        if(0 < l && l <= 16) {
+        if (0 < l && l <= 16) {
             System.out.println("ようこそ" + name + "さん！");
-            ga = new GameArea();
             ga.setName(name);
         } else {
             System.out.println("ゲスト");
-            ga = new GameArea();
             ga.setName("ゲスト");
         }
-        
+
         System.out.println("EnterKeyを押してスタート！！");
-        while ((System.in.read()) != '\n') ;
+        while ((System.in.read()) != '\n')
+            ;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new App(ga).setVisible(true);
