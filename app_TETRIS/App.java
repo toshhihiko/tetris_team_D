@@ -5,6 +5,8 @@ import javax.swing.InputMap;
 import javax.swing.ActionMap;
 import javax.swing.KeyStroke;
 import javax.swing.AbstractAction;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.Scanner;
 
@@ -13,6 +15,11 @@ public class App extends JFrame {
 
     public App(GameArea ga) {
         this.ga = ga;
+        add(ga);
+        setSize(480, 840);
+        setLocationRelativeTo(null);
+        setBackground(Color.gray);
+
         new GameThread(ga).start();
         initControls();
     }
@@ -53,7 +60,6 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(1, 0, 0)) {
                     ga.moveRight();
-                    //ga.drawFieldAndMino();
                 }
             }
         });
@@ -63,7 +69,6 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(-1, 0, 0)) {
                     ga.moveLeft();
-                    //ga.drawFieldAndMino();
                 }
             }
         });
@@ -73,7 +78,6 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(0, 1, 0)) {
                     ga.moveDown();
-                    //ga.drawFieldAndMino();
                 }
             }
         });
@@ -83,7 +87,14 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(0, 0, 1)) {
                     ga.rotation();
-                    //ga.drawFieldAndMino();
+                }
+            }
+        });
+        im.put(KeyStroke.getKeyStroke("SPACE"), "space");
+        am.put("space", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                if (!ga.isCollison(0, 0, 0)) {
+                    ga.pendingMino();
                 }
             }
         });

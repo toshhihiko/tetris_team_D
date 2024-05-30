@@ -1,6 +1,13 @@
 package app_TETRIS;
 
-public class GameArea {
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JPanel;
+
+public class GameArea extends JPanel {
     private int fieldHight = 25;
     private int fieldWidth = 14;
     private int grandHight = 28;
@@ -9,6 +16,8 @@ public class GameArea {
     private int[][] bufferField;
     private Mino mino;
     private Mino nextMino;
+    private Mino pendingMino;
+    private Mino storeMino;
     private String name;
     private int score = 0;
     private int linecount = 0;
@@ -18,6 +27,8 @@ public class GameArea {
     public GameArea() {
         this.mino = new Mino();
         this.nextMino = new Mino();
+        this.pendingMino = new Mino();
+        this.storeMino = new Mino();
         this.field = new int[grandHight][grandWidth];
         this.bufferField = new int[grandHight][grandWidth];
         initBufferField();
@@ -39,8 +50,11 @@ public class GameArea {
 
         System.out.println("Next Mino");
         drawNextMino();
+        System.out.println("Pending Mino");
+        drawPendingMino();
         System.out.println();
         drawField();
+        repaint();
     }
 
     public void drawBufferFieldAndMino() {
@@ -52,8 +66,11 @@ public class GameArea {
 
         System.out.println("Next Mino");
         drawNextMino();
+        System.out.println("Pending Mino");
+        drawPendingMino();
         System.out.println();
         drawField();
+        repaint();
 
         for (int i = edge_left + 1; i < fieldWidth - 1; i++) {
             if (this.field[3][i] == 1) {
@@ -108,6 +125,44 @@ public class GameArea {
             }
             System.out.println();
         }
+    }
+    public void drawPendingMino() {
+        int[][][] m = this.pendingMino.getMino();
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                System.out.printf("%s", (m[storeMino.getMinoAngle()][y][x] == 1 ? "回" : "・"));
+            }
+            System.out.println();
+        }
+    }
+
+    // Windowに表示
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        drawFieldWindow(g2);
+        drawNextMinoWindow(g2);
+    }
+    public void drawFieldWindow(Graphics2D g2) {
+        g2.setColor(Color.lightGray);
+        g2.fillRect(60, 120, 360, 630);
+        for (int y = edge_top; y < fieldHight; y++) {
+            for (int x = edge_left; x < fieldWidth; x++) {
+                if (this.field[y][x] == 1) drawSquare(g2, x, y);
+            }
+        }
+    }
+    public void drawNextMinoWindow(Graphics2D g2) {
+
+    }
+    void drawSquare(Graphics2D g2, int x, int y) {
+        g2.setColor(Color.black);
+        g2.fillRect(x * 30, y * 30, 30, 30);
+
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.white);
+        g2.drawRect(x * 30, y * 30, 30, 30);
     }
 
     // ミノをフィールドに書き込む系
@@ -179,16 +234,13 @@ public class GameArea {
     }
 
     public void addScore(int lines) {
-        if (lines == 1)
-            score += 40;
-        else if (lines == 2)
-            score += 100;
-        else if (lines == 3)
-            score += 300;
-        else if (lines == 4)
-            score += 1200;
-        else
-            score += 0;
+        switch (lines) {
+            case 1: score += 40; break;
+            case 2: score += 100; break;
+            case 3: score += 300; break;
+            case 4: score += 1200; break;
+            default: score += 0;
+        }
     }
 
     // 操作系
@@ -206,5 +258,12 @@ public class GameArea {
 
     public void rotation() {
         this.mino.setMinoAngle((this.mino.getMinoAngle() + 1) % this.mino.getMinoAngleSize());
+    }
+    public void pendingMino() {
+        this.storeMino = this.mino;
+        pendingMino.setMinoX(this.storeMino.getMinoX());
+        pendingMino.setMinoY(this.storeMino.getMinoY());
+        this.mino = this.pendingMino;
+        this.pendingMino = this.storeMino;
     }
 }
