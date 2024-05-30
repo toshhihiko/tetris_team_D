@@ -22,8 +22,11 @@ public class GameArea extends JPanel {
     private String name;
     private int score = 0;
     private int linecount = 0;
+    private int lines = 0;
+    private int combos = 0;
     private int edge_left = 2;
     private int edge_top = 4;
+    private int speed = 50;
 
     String RESET = "\u001B[0m";
     String BLACK = "\u001B[30m";
@@ -53,7 +56,12 @@ public class GameArea extends JPanel {
     public void setName(String name) {
         this.name = name;
     }
-
+    public int getSpeed() {
+        return this.speed;
+    }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
     // 本丸
     public void drawFieldAndMino() {
         initField();
@@ -212,9 +220,9 @@ public class GameArea extends JPanel {
     }
 
     public void drawNextMinoWindow(Graphics2D g2) {
-        g2.setFont(new Font("MSPゴシック", Font.PLAIN, 24));
+        g2.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         g2.setColor(Color.black);
-        g2.drawString("NEXT", 525, 105);
+        g2.drawString("NEXT", 510, 105);
 
         int[][][] m = this.nextMino.getMino();
         g2.setStroke(new BasicStroke(2));
@@ -239,9 +247,9 @@ public class GameArea extends JPanel {
         }
     }
     public void drawPendingMinoWindow(Graphics2D g2) {
-        g2.setFont(new Font("MSPゴシック", Font.PLAIN, 24));
+        g2.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         g2.setColor(Color.black);
-        g2.drawString("HOLD", 45, 105);
+        g2.drawString("HOLD", 30, 105);
 
         int[][][] m = this.pendingMino.getMino();
         g2.setStroke(new BasicStroke(2));
@@ -274,11 +282,32 @@ public class GameArea extends JPanel {
         g2.drawRect(x * width + mergin_x, y * hight + mergin_y, width, hight);
     }
     public void drawStatus(Graphics2D g2) {
-        g2.setFont(new Font("MSPゴシック", Font.PLAIN, 24));
+        g2.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         g2.setColor(Color.black);
-        g2.drawString("消したライン数：" + this.linecount, 135, 785);
-        g2.drawString("名前：" + this.name, 135, 825);
-        g2.drawString("スコア：" + this.score, 315, 825);
+        g2.drawString("SCORES", 510, 255);
+        g2.drawString(String.valueOf(this.score), 510, 300);
+        g2.drawString("NAME", 510, 360);
+        g2.drawString(this.name, 510, 405);
+        g2.drawString("LINES", 510, 465);
+        g2.drawString(String.valueOf(this.linecount), 510, 510);
+        g2.drawString("SPEED", 270, 780);
+        g2.drawString(String.valueOf(this.speed), 285, 825);
+
+
+        g2.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        g2.setColor(Color.red);
+        switch (lines) {
+            case 1: g2.drawString("SINGLE +40", 230, 30); break;
+            case 2: g2.drawString("DOUBLE +100", 230, 30); break;
+            case 3: g2.drawString("TRIPLE +1200", 230, 30); break;
+            case 4: g2.drawString("TETRIS +3000", 230, 30); break;
+            default: break;
+        }
+        if (combos != 0) g2.drawString(combos + "COMBO +" + combos*10, 230, 60);
+        else g2.drawString("", 230, 60);
+    }
+    public void drawEffects(Graphics2D g2, int lines) {
+
     }
 
 
@@ -329,7 +358,7 @@ public class GameArea extends JPanel {
 
     // ライン削除処理
     public void eraseLine() {
-        int lines = 0;
+        lines = 0;
         for (int y = fieldHight - 2; y > 0; y--) {
             boolean isFill = true;
             for (int x = edge_left + 1; x < fieldWidth - 1; x++) {
@@ -346,6 +375,9 @@ public class GameArea extends JPanel {
                 y++;
             }
         }
+        if (lines > 0) combos ++;
+        else combos = 0;
+
         this.linecount += lines;
         addScore(lines);
     }

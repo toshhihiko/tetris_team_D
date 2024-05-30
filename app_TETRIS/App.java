@@ -1,19 +1,29 @@
 package app_TETRIS;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
 import javax.swing.InputMap;
 import javax.swing.ActionMap;
 import javax.swing.KeyStroke;
 import javax.swing.AbstractAction;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.Scanner;
 
-public class App extends JFrame {
+public class App extends JFrame implements AdjustmentListener {
     GameArea ga;
 
+    JScrollBar scrollBar = new JScrollBar(JScrollBar.HORIZONTAL, 50, 5, 0, 105);
+
     public App(GameArea ga) {
+        scrollBar.addAdjustmentListener(this);
+        getContentPane().add(BorderLayout.SOUTH, scrollBar);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         this.ga = ga;
         add(ga);
         setSize(630, 885);
@@ -98,5 +108,10 @@ public class App extends JFrame {
                 }
             }
         });
+    }
+    @Override
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        JScrollBar sb = (JScrollBar)e.getSource();
+        ga.setSpeed(sb.getValue());
     }
 }

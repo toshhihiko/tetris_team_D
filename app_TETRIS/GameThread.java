@@ -17,7 +17,7 @@ public class GameThread extends Thread {
         while (true) {
             ga.drawFieldAndMino();
             dropTimer ++;
-            if (dropTimer >= 10 && !ga.isCollison(0, 1, 0)) {
+            if (dropTimer >= 20 * (100 - ga.getSpeed()) / 100 && !ga.isCollison(0, 1, 0)) {
                 ga.moveDown();
                 dropTimer = 0;
             }
