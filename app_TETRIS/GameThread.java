@@ -12,21 +12,24 @@ public class GameThread extends Thread {
     }
 
     public void run() {
+        int dropTimer = 0;
+        int stackTimer = 0;
         while (true) {
-            if (!ga.isCollison(0, 1, 0)) {
+            ga.drawFieldAndMino();
+            dropTimer ++;
+            if (dropTimer >= 10 && !ga.isCollison(0, 1, 0)) {
                 ga.moveDown();
-                ga.drawFieldAndMino();
+                dropTimer = 0;
             }
-            else if (ga.isStack()) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
+            if (ga.isStack()) {
+                stackTimer ++;
+                if (stackTimer >= 5) {
+                    ga.drawBufferFieldAndMino();
+                    stackTimer = 0;
                 }
-                ga.drawBufferFieldAndMino();
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
             }

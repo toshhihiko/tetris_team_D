@@ -46,7 +46,6 @@ public class GameArea {
     public void drawBufferFieldAndMino() {
         bufferFieldAddMino();
         initField();
-        
         eraseLine();
         this.mino = this.nextMino;
         this.nextMino = new Mino();

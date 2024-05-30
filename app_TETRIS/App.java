@@ -36,8 +36,6 @@ public class App extends JFrame {
         }
 
         System.out.println("EnterKeyを押してスタート！！");
-        while ((System.in.read()) != '\n')
-            ;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new App(ga).setVisible(true);
@@ -55,7 +53,7 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(1, 0, 0)) {
                     ga.moveRight();
-                    ga.drawFieldAndMino();
+                    //ga.drawFieldAndMino();
                 }
             }
         });
@@ -65,7 +63,7 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(-1, 0, 0)) {
                     ga.moveLeft();
-                    ga.drawFieldAndMino();
+                    //ga.drawFieldAndMino();
                 }
             }
         });
@@ -75,7 +73,7 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(0, 1, 0)) {
                     ga.moveDown();
-                    ga.drawFieldAndMino();
+                    //ga.drawFieldAndMino();
                 }
             }
         });
@@ -85,7 +83,7 @@ public class App extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!ga.isCollison(0, 0, 1)) {
                     ga.rotation();
-                    ga.drawFieldAndMino();
+                    //ga.drawFieldAndMino();
                 }
             }
         });
