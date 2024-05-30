@@ -16,7 +16,7 @@ public class App extends JFrame {
     public App(GameArea ga) {
         this.ga = ga;
         add(ga);
-        setSize(480, 840);
+        setSize(630, 885);
         setLocationRelativeTo(null);
         setBackground(Color.gray);
 

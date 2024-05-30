@@ -2,6 +2,7 @@ package app_TETRIS;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -23,6 +24,16 @@ public class GameArea extends JPanel {
     private int linecount = 0;
     private int edge_left = 2;
     private int edge_top = 4;
+
+    String RESET = "\u001B[0m";
+    String BLACK = "\u001B[30m";
+    String RED = "\u001B[31m";
+    String GREEN = "\u001B[32m";
+    String YELLOW = "\u001B[33m";
+    String BLUE = "\u001B[34m";
+    String PURPLE = "\u001B[35m";
+    String CYAN = "\u001B[36m";
+    String PINK = "\u001B[95m";
 
     public GameArea() {
         this.mino = new Mino();
@@ -73,7 +84,7 @@ public class GameArea extends JPanel {
         repaint();
 
         for (int i = edge_left + 1; i < fieldWidth - 1; i++) {
-            if (this.field[3][i] == 1) {
+            if (this.field[3][i] >= 2) {
                 System.out.println("GameOver");
                 System.out.println(this.name + "  あなたのスコア:" + this.score);
                 System.exit(0);
@@ -108,7 +119,18 @@ public class GameArea extends JPanel {
     public void drawField() {
         for (int y = edge_top; y < fieldHight; y++) {
             for (int x = edge_left; x < fieldWidth; x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "回" : "・"));
+                switch (field[y][x]) {
+                    case 0 : System.out.print("・"); break;
+                    case 1 : System.out.print("回"); break;
+                    case 2 : System.out.print(RED + "回" + RESET); break;
+                    case 3 : System.out.print(GREEN + "回" + RESET); break;
+                    case 4 : System.out.print(YELLOW + "回" + RESET); break;
+                    case 5 : System.out.print(BLUE + "回" + RESET); break;
+                    case 6 : System.out.print(PURPLE + "回" + RESET); break;
+                    case 7 : System.out.print(CYAN + "回" + RESET); break;
+                    case 8 : System.out.print(PINK + "回" + RESET); break;
+                    default: throw new AssertionError();
+                }
             }
             System.out.println();
         }
@@ -121,16 +143,39 @@ public class GameArea extends JPanel {
         int[][][] m = this.nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                System.out.printf("%s", (m[0][y][x] == 1 ? "回" : "・"));
+                switch (m[0][y][x]) {
+                    case 0 : System.out.print("・"); break;
+                    case 1 : System.out.print("回"); break;
+                    case 2 : System.out.print(RED + "回" + RESET); break;
+                    case 3 : System.out.print(GREEN + "回" + RESET); break;
+                    case 4 : System.out.print(YELLOW + "回" + RESET); break;
+                    case 5 : System.out.print(BLUE + "回" + RESET); break;
+                    case 6 : System.out.print(PURPLE + "回" + RESET); break;
+                    case 7 : System.out.print(CYAN + "回" + RESET); break;
+                    case 8 : System.out.print(PINK + "回" + RESET); break;
+                    default: throw new AssertionError();
+                }
             }
             System.out.println();
         }
     }
+
     public void drawPendingMino() {
         int[][][] m = this.pendingMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                System.out.printf("%s", (m[storeMino.getMinoAngle()][y][x] == 1 ? "回" : "・"));
+                switch (m[storeMino.getMinoAngle()][y][x]) {
+                    case 0 : System.out.print("・"); break;
+                    case 1 : System.out.print("回"); break;
+                    case 2 : System.out.print(RED + "回" + RESET); break;
+                    case 3 : System.out.print(GREEN + "回" + RESET); break;
+                    case 4 : System.out.print(YELLOW + "回" + RESET); break;
+                    case 5 : System.out.print(BLUE + "回" + RESET); break;
+                    case 6 : System.out.print(PURPLE + "回" + RESET); break;
+                    case 7 : System.out.print(CYAN + "回" + RESET); break;
+                    case 8 : System.out.print(PINK + "回" + RESET); break;
+                    default: throw new AssertionError();
+                }
             }
             System.out.println();
         }
@@ -143,27 +188,99 @@ public class GameArea extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         drawFieldWindow(g2);
         drawNextMinoWindow(g2);
+        drawPendingMinoWindow(g2);
+        drawStatus(g2);
     }
+
     public void drawFieldWindow(Graphics2D g2) {
-        g2.setColor(Color.lightGray);
-        g2.fillRect(60, 120, 360, 630);
         for (int y = edge_top; y < fieldHight; y++) {
             for (int x = edge_left; x < fieldWidth; x++) {
-                if (this.field[y][x] == 1) drawSquare(g2, x, y);
+                switch (field[y][x]) {
+                    case 0 : drawSquare(g2, Color.lightGray, Color.white, x, y, 75 , 0, 30, 30); break;
+                    case 1 : drawSquare(g2, Color.black, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 2 : drawSquare(g2, Color.red, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 3 : drawSquare(g2, Color.green, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 4 : drawSquare(g2, Color.yellow, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 5 : drawSquare(g2, Color.blue, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 6 : drawSquare(g2, Color.ORANGE, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 7 : drawSquare(g2, Color.cyan, Color.black, x, y, 75, 0, 30, 30); break;
+                    case 8 : drawSquare(g2, Color.pink, Color.black, x, y, 75, 0, 30, 30); break;
+                    default: throw new AssertionError();
+                }
             }
         }
     }
+
     public void drawNextMinoWindow(Graphics2D g2) {
-
-    }
-    void drawSquare(Graphics2D g2, int x, int y) {
+        g2.setFont(new Font("MSPゴシック", Font.PLAIN, 24));
         g2.setColor(Color.black);
-        g2.fillRect(x * 30, y * 30, 30, 30);
+        g2.drawString("NEXT", 525, 105);
 
+        int[][][] m = this.nextMino.getMino();
         g2.setStroke(new BasicStroke(2));
-        g2.setColor(Color.white);
-        g2.drawRect(x * 30, y * 30, 30, 30);
+        g2.setColor(Color.black);
+        g2.drawRect(510, 120, 90, 90);
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                switch (m[0][y][x]) {
+                    case 0 : drawSquare(g2, Color.LIGHT_GRAY, Color.white, x, y, 525, 135, 15, 15); break;
+                    case 1 : drawSquare(g2, Color.black, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 2 : drawSquare(g2, Color.red, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 3 : drawSquare(g2, Color.green, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 4 : drawSquare(g2, Color.yellow, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 5 : drawSquare(g2, Color.blue, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 6 : drawSquare(g2, Color.ORANGE, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 7 : drawSquare(g2, Color.cyan, Color.black, x, y, 525, 135, 15, 15); break;
+                    case 8 : drawSquare(g2, Color.pink, Color.black, x, y, 525, 135, 15, 15); break;
+                    default: throw new AssertionError();
+                }
+            }
+            System.out.println();
+        }
     }
+    public void drawPendingMinoWindow(Graphics2D g2) {
+        g2.setFont(new Font("MSPゴシック", Font.PLAIN, 24));
+        g2.setColor(Color.black);
+        g2.drawString("HOLD", 45, 105);
+
+        int[][][] m = this.pendingMino.getMino();
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.black);
+        g2.drawRect(30, 120, 90, 90);
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                switch (m[storeMino.getMinoAngle()][y][x]) {
+                    case 0 : drawSquare(g2, Color.LIGHT_GRAY, Color.white, x, y, 45, 135, 15, 15); break;
+                    case 1 : drawSquare(g2, Color.black, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 2 : drawSquare(g2, Color.red, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 3 : drawSquare(g2, Color.green, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 4 : drawSquare(g2, Color.yellow, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 5 : drawSquare(g2, Color.blue, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 6 : drawSquare(g2, Color.ORANGE, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 7 : drawSquare(g2, Color.cyan, Color.black, x, y, 45, 135, 15, 15); break;
+                    case 8 : drawSquare(g2, Color.pink, Color.black, x, y, 45, 135, 15, 15); break;
+                    default: throw new AssertionError();
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void drawSquare(Graphics2D g2, Color fillColor, Color lineColor, int x, int y, int mergin_x, int mergin_y, int width, int hight) {
+        g2.setColor(fillColor);
+        g2.fillRect(x * width + mergin_x, y * hight + mergin_y, width, hight);
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(lineColor);
+        g2.drawRect(x * width + mergin_x, y * hight + mergin_y, width, hight);
+    }
+    public void drawStatus(Graphics2D g2) {
+        g2.setFont(new Font("MSPゴシック", Font.PLAIN, 24));
+        g2.setColor(Color.black);
+        g2.drawString("消したライン数：" + this.linecount, 135, 785);
+        g2.drawString("名前：" + this.name, 135, 825);
+        g2.drawString("スコア：" + this.score, 315, 825);
+    }
+
 
     // ミノをフィールドに書き込む系
     public void fieldAddMino() {
@@ -188,8 +305,8 @@ public class GameArea extends JPanel {
     public boolean isStack() {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
-                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] == 1
-                        && this.mino.getMino()[this.mino.getMinoAngle()][r][c] == 1) {
+                if (this.bufferField[this.mino.getMinoY() + r + 1][this.mino.getMinoX() + c] >= 1
+                        && this.mino.getMino()[this.mino.getMinoAngle()][r][c] >= 2) {
                     return true;
                 }
             }
@@ -201,8 +318,8 @@ public class GameArea extends JPanel {
         for (int r = 0; r < this.mino.getMinoSize(); r++) {
             for (int c = 0; c < this.mino.getMinoSize(); c++) {
                 int nextAngle = (mino.getMinoAngle() + angle) % mino.getMinoAngleSize();
-                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] == 1
-                        && mino.getMino()[nextAngle][r][c] == 1) {
+                if (this.bufferField[mino.getMinoY() + y + r][mino.getMinoX() + x + c] >= 1
+                        && mino.getMino()[nextAngle][r][c] >= 2) {
                     return true;
                 }
             }
@@ -235,11 +352,20 @@ public class GameArea extends JPanel {
 
     public void addScore(int lines) {
         switch (lines) {
-            case 1: score += 40; break;
-            case 2: score += 100; break;
-            case 3: score += 300; break;
-            case 4: score += 1200; break;
-            default: score += 0;
+            case 1:
+                score += 40;
+                break;
+            case 2:
+                score += 100;
+                break;
+            case 3:
+                score += 300;
+                break;
+            case 4:
+                score += 1200;
+                break;
+            default:
+                score += 0;
         }
     }
 
@@ -259,6 +385,7 @@ public class GameArea extends JPanel {
     public void rotation() {
         this.mino.setMinoAngle((this.mino.getMinoAngle() + 1) % this.mino.getMinoAngleSize());
     }
+
     public void pendingMino() {
         this.storeMino = this.mino;
         pendingMino.setMinoX(this.storeMino.getMinoX());

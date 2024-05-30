@@ -17,19 +17,19 @@ public class GameThread extends Thread {
         while (true) {
             ga.drawFieldAndMino();
             dropTimer ++;
-            if (dropTimer >= 2 && !ga.isCollison(0, 1, 0)) {
+            if (dropTimer >= 10 && !ga.isCollison(0, 1, 0)) {
                 ga.moveDown();
                 dropTimer = 0;
             }
             if (ga.isStack()) {
                 stackTimer ++;
-                if (stackTimer >= 2) {
+                if (stackTimer >= 10) {
                     ga.drawBufferFieldAndMino();
                     stackTimer = 0;
                 }
             }
             try {
-                Thread.sleep(40);
+                Thread.sleep(10);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
             }
